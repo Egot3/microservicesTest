@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package ecommerce;
+
+option go_package = "girhub.com/Egot3/microserviceTest/proto/gen";
+
+import "google/protobuf/timestamp.proto";
+
+enum OrderStatus {
+    ORDER_PENDING = 0;
+    ORDER_PAID = 1;
+    ORDER_SHIPPED = 2;
+    ORDER_DELIVERED = 3;
+    ORDER_CANCELLED = 4;
+}
+
+enum PaymantMethod {
+    PAYMENT_UNSPECIFIED = 0;
+    PAYMENT_CARD = 1;
+    PAYMENT_BANK_TRANCSFER = 2;
+}
+
+
+message OrderItem {
+    string product_id = 1;
+    string product_name = 2;
+    int32 quantity = 3;
+    double unit_price = 4;
+}
+
+
+message Order {
+    string order_id = 1;
+    string customer_id = 2;
+
+    repeated OrderItem items = 3;
+    double total_amount = 4;
+    OrderStatus status = 5;
+    PaymantMethod payment_method = 6;
+
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp updated_at = 8;
+
+    string shipping_address = 9;
+    string notes = 10;
+}
+
+
+message CreateOrderRequest {
+    string customer_id = 1;
+    repeated OrderItemRequest items = 2;
+    PaymantMethod payment_method = 3;
+    string shipping_address = 4;
+}
+
+message OrderItemRequest {
+    string product_id = 1;
+    int32 quantity = 2;
+}
+
+message CreateOrderResponse {
+    string order_id = 1;
+    double total_amount = 2;
+    OrderStatus status = 3;
+}
+
+message GetOrderRequest {
+    string order_id = 1;
+}
+
+message GetOrderResponse {
+    Order order = 1;
+}
+
+message UpdateOrderStatusRequest {
+    string order_id = 1;
+    OrderStatus new_status = 2;
+}
+
+message UpdateOrderStatusResponse {
+    bool success = 1;
+    Order order = 2;
+}
+
+message ListOrdersRequest {
+    string customer_id = 1;
+    OrderStatus status = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message ListOrdersResponse {
+    repeated Order orders = 1;
+    int32 total_count = 2;
+    int32 page = 3;
+    int32 total_pages = 4;
+}
+
+service OrderService {
+    rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+    rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+    rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (UpdateOrderStatusResponse);
+
+    rpc StreamOrderUpdates(GetOrderRequest) returns (stream Order);
+    rpc BulkCreateOrders(stream CreateOrderRequest) returns (CreateOrderResponse);
+    rpc ChatOrderSupport(stream SupportMessage) returns (stream SupportMessage);
+}
+
+message SupportMessage {
+  string user_id = 1;
+  string text = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+// Challenge 1: Add Inventory Reservation
+
+// Design messages for reserving inventory when an order is created:
+
+//     What fields would a ReserveInventoryRequest need?
+
+//     How would OrderItem change to track reservation status?
+
+// Challenge 2: Add Discounts
+
+// Add discount support to orders:
+
+//     Should discounts be per-item or per-order?
+
+//     How would you represent percentage vs fixed-amount discounts?
