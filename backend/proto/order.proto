@@ -51,6 +51,7 @@ message CreateOrderRequest {
     repeated OrderItemRequest items = 2;
     PaymantMethod payment_method = 3;
     string shipping_address = 4;
+		string notes = 5;
 }
 
 message OrderItemRequest {
