@@ -21,7 +21,7 @@ func main() {
 		log.Fatalf("Failed to listen on port %s: %v", port, err)
 	}
 
-	log.Printf("Product Service gRPC server listening on %s", port)
+	log.Printf("Product Service gRPC server on %s", port)
 
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
