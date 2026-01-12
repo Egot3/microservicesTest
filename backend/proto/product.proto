@@ -4,6 +4,9 @@ package ecommerce; //what a name
 
 option go_package = "girhub.com/Egot3/microserviceTest/proto/gen";
 
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
 message Product {
     string id = 1;
     string name = 2;
@@ -31,7 +34,13 @@ message CreateProductResponse {
     string product_id = 1;
 }
 
+message HealthCheckResponse {
+    bool alive = 1;
+    google.protobuf.Timestamp checked_at = 2;
+}
+
 service ProductService {
     rpc GetProduct(GetProductRequest) returns (GetProductResponse);
     rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);
+    rpc HealthCheck(google.protobuf.Empty) returns (HealthCheckResponse);
 }

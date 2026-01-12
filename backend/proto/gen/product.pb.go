@@ -9,6 +9,8 @@ package gen
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -297,11 +299,63 @@ func (x *CreateProductResponse) GetProductId() string {
 	return ""
 }
 
+type HealthCheckResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Alive         bool                   `protobuf:"varint,1,opt,name=alive,proto3" json:"alive,omitempty"`
+	CheckedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=checked_at,json=checkedAt,proto3" json:"checked_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HealthCheckResponse) Reset() {
+	*x = HealthCheckResponse{}
+	mi := &file_product_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HealthCheckResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HealthCheckResponse) ProtoMessage() {}
+
+func (x *HealthCheckResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_product_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HealthCheckResponse.ProtoReflect.Descriptor instead.
+func (*HealthCheckResponse) Descriptor() ([]byte, []int) {
+	return file_product_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *HealthCheckResponse) GetAlive() bool {
+	if x != nil {
+		return x.Alive
+	}
+	return false
+}
+
+func (x *HealthCheckResponse) GetCheckedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CheckedAt
+	}
+	return nil
+}
+
 var File_product_proto protoreflect.FileDescriptor
 
 const file_product_proto_rawDesc = "" +
 	"\n" +
-	"\rproduct.proto\x12\tecommerce\"{\n" +
+	"\rproduct.proto\x12\tecommerce\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"{\n" +
 	"\aProduct\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -320,11 +374,16 @@ const file_product_proto_rawDesc = "" +
 	"\x05stock\x18\x04 \x01(\x05R\x05stock\"6\n" +
 	"\x15CreateProductResponse\x12\x1d\n" +
 	"\n" +
-	"product_id\x18\x01 \x01(\tR\tproductId2\xaf\x01\n" +
+	"product_id\x18\x01 \x01(\tR\tproductId\"f\n" +
+	"\x13HealthCheckResponse\x12\x14\n" +
+	"\x05alive\x18\x01 \x01(\bR\x05alive\x129\n" +
+	"\n" +
+	"checked_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcheckedAt2\xf6\x01\n" +
 	"\x0eProductService\x12I\n" +
 	"\n" +
 	"GetProduct\x12\x1c.ecommerce.GetProductRequest\x1a\x1d.ecommerce.GetProductResponse\x12R\n" +
-	"\rCreateProduct\x12\x1f.ecommerce.CreateProductRequest\x1a .ecommerce.CreateProductResponseB-Z+girhub.com/Egot3/microserviceTest/proto/genb\x06proto3"
+	"\rCreateProduct\x12\x1f.ecommerce.CreateProductRequest\x1a .ecommerce.CreateProductResponse\x12E\n" +
+	"\vHealthCheck\x12\x16.google.protobuf.Empty\x1a\x1e.ecommerce.HealthCheckResponseB-Z+girhub.com/Egot3/microserviceTest/proto/genb\x06proto3"
 
 var (
 	file_product_proto_rawDescOnce sync.Once
@@ -338,25 +397,31 @@ func file_product_proto_rawDescGZIP() []byte {
 	return file_product_proto_rawDescData
 }
 
-var file_product_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_product_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_product_proto_goTypes = []any{
 	(*Product)(nil),               // 0: ecommerce.Product
 	(*GetProductRequest)(nil),     // 1: ecommerce.GetProductRequest
 	(*GetProductResponse)(nil),    // 2: ecommerce.GetProductResponse
 	(*CreateProductRequest)(nil),  // 3: ecommerce.CreateProductRequest
 	(*CreateProductResponse)(nil), // 4: ecommerce.CreateProductResponse
+	(*HealthCheckResponse)(nil),   // 5: ecommerce.HealthCheckResponse
+	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),         // 7: google.protobuf.Empty
 }
 var file_product_proto_depIdxs = []int32{
 	0, // 0: ecommerce.GetProductResponse.product:type_name -> ecommerce.Product
-	1, // 1: ecommerce.ProductService.GetProduct:input_type -> ecommerce.GetProductRequest
-	3, // 2: ecommerce.ProductService.CreateProduct:input_type -> ecommerce.CreateProductRequest
-	2, // 3: ecommerce.ProductService.GetProduct:output_type -> ecommerce.GetProductResponse
-	4, // 4: ecommerce.ProductService.CreateProduct:output_type -> ecommerce.CreateProductResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	6, // 1: ecommerce.HealthCheckResponse.checked_at:type_name -> google.protobuf.Timestamp
+	1, // 2: ecommerce.ProductService.GetProduct:input_type -> ecommerce.GetProductRequest
+	3, // 3: ecommerce.ProductService.CreateProduct:input_type -> ecommerce.CreateProductRequest
+	7, // 4: ecommerce.ProductService.HealthCheck:input_type -> google.protobuf.Empty
+	2, // 5: ecommerce.ProductService.GetProduct:output_type -> ecommerce.GetProductResponse
+	4, // 6: ecommerce.ProductService.CreateProduct:output_type -> ecommerce.CreateProductResponse
+	5, // 7: ecommerce.ProductService.HealthCheck:output_type -> ecommerce.HealthCheckResponse
+	5, // [5:8] is the sub-list for method output_type
+	2, // [2:5] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_product_proto_init() }
@@ -370,7 +435,7 @@ func file_product_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_product_proto_rawDesc), len(file_product_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
