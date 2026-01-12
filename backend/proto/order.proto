@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package ecommerce;
 
-option go_package = "girhub.com/Egot3/microserviceTest/proto/gen";
+option go_package = "github.com/Egot3/microserviceTest/proto/gen";
 
 import "google/protobuf/timestamp.proto";
 
@@ -20,12 +20,32 @@ enum PaymantMethod {
     PAYMENT_BANK_TRANCSFER = 2;
 }
 
+message Discount {
+    oneof discount_spec {
+        PercentDiscount percent = 1;
+        FixedAmountDiscount fixed = 2;
+    }
+    string discount_code = 3;
+}
+
+message PercentDiscount {
+    int32 percentage = 1;
+    reserved 2 to 10;
+}
+
+message FixedAmountDiscount {
+    double amount = 1;
+    reserved 2 to 10;
+}
 
 message OrderItem {
     string product_id = 1;
     string product_name = 2;
     int32 quantity = 3;
+
     double unit_price = 4;
+
+    Discount item_discount = 5;
 }
 
 
@@ -34,9 +54,16 @@ message Order {
     string customer_id = 2;
 
     repeated OrderItem items = 3;
-    double total_amount = 4;
+    double subtotal = 4;
+    double total_discounts = 12;
+    double shipping_fee = 13;
+    double tax_amount = 14;
+    double grand_total = 15;
+
     OrderStatus status = 5;
     PaymantMethod payment_method = 6;
+
+    Discount order_discount = 11;
 
     google.protobuf.Timestamp created_at = 7;
     google.protobuf.Timestamp updated_at = 8;
@@ -51,7 +78,7 @@ message CreateOrderRequest {
     repeated OrderItemRequest items = 2;
     PaymantMethod payment_method = 3;
     string shipping_address = 4;
-		string notes = 5;
+	string notes = 5;
 }
 
 message OrderItemRequest {
@@ -62,6 +89,7 @@ message OrderItemRequest {
 message CreateOrderResponse {
     string order_id = 1;
     double total_amount = 2;
+    int32 max_discount_amount = 4;
     OrderStatus status = 3;
 }
 
@@ -120,11 +148,3 @@ message SupportMessage {
 //     What fields would a ReserveInventoryRequest need?
 
 //     How would OrderItem change to track reservation status?
-
-// Challenge 2: Add Discounts
-
-// Add discount support to orders:
-
-//     Should discounts be per-item or per-order?
-
-//     How would you represent percentage vs fixed-amount discounts?
