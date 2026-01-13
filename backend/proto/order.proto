@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package ecommerce;
 
-option go_package = "github.com/Egot3/microserviceTest/proto/gen";
+option go_package = "./";
 
 import "google/protobuf/timestamp.proto";
 
@@ -89,7 +89,7 @@ message OrderItemRequest {
 message CreateOrderResponse {
     string order_id = 1;
     double total_amount = 2;
-    int32 max_discount_amount = 4;
+    int32 discount_amount = 4;
     OrderStatus status = 3;
 }
 
